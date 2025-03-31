@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AirTaxi - User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Fonts and Font Awesome -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Stylesheet -->
+    <style>
+      :root {
+        --primary: #0062ff;
+        --secondary: #4caf50;
+        --accent: #f59e0b;
+        --dark: #1a1a1a;
+        --light: #ffffff;
+        --gray: #f5f7fa;
+        --background: #f5f7fa;
+        --card-bg: #ffffff;
+        --text-primary: #1a1a1a;
+        --text-secondary: #666666;
+        --border-color: #e0e0e0;
+        --error: #e74c3c;
+        --success: #28a745;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background: var(--background);
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      /* Header Styles */
+      header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+      }
+
+      .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1.2rem 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.05);
+      }
+
+      .logo img {
+        height: 45px;
+        transition: transform 0.3s ease;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+      }
+
+      nav a {
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        position: relative;
+      }
+
+      nav a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      nav a:hover::after,
+      nav a.active::after {
+        width: 100%;
+      }
+
+      nav a:hover,
+      nav a.active {
+        color: var(--primary);
+      }
+
+      .auth-buttons {
+        display: flex;
+        gap: 1.2rem;
+      }
+
+      .btn {
+        padding: 0.8rem 1.6rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: var(--light);
+      }
+
+      .btn-secondary {
+        background: var(--gray);
+        color: var(--text-primary);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      /* Profile Section */
+      .profile-section {
+        padding: 9rem 2rem 4rem;
+        max-width: 800px;
+        margin: 0 auto;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .profile-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .profile-header h2 {
+        font-size: 2.75rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+      }
+
+      .profile-header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+      }
+
+      .profile-card {
+        background: var(--light);
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .profile-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .profile-picture {
+        flex-shrink: 0;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--gray);
+        position: relative;
+        border: 3px solid var(--primary);
+        transition: transform 0.3s ease;
+      }
+
+      .profile-picture:hover {
+        transform: scale(1.05);
+      }
+
+      .profile-picture img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .upload-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 98, 255, 0.8);
+        color: var(--light);
+        padding: 0.6rem;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .upload-btn:hover {
+        background: var(--primary);
+        transform: scale(1.1);
+      }
+
+      .profile-details {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
+      .profile-details label {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      .profile-details span {
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        font-weight: 500;
+        padding: 0.3rem 0;
+        display: inline-block;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+      }
+
+      .edit-profile-btn {
+        display: inline-block;
+        margin-top: 1.5rem;
+        background: var(--primary);
+        color: var(--light);
+        padding: 0.8rem 1.8rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        border: none;
+        width: fit-content;
+      }
+
+      .edit-profile-btn:hover {
+        background: #0052d6;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      /* Booking History Section */
+      .flights-section {
+        margin-top: 4rem;
+        animation: fadeIn 0.7s ease-out 0.2s both;
+      }
+
+      .flights-section h3 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .flights-section h3::after {
+        content: "";
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        bottom: -8px;
+        left: 25%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: 3px;
+      }
+
+      .flight-card {
+        background: var(--light);
+        padding: 1.8rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.8rem;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .flight-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      .flight-card:hover {
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-3px);
+      }
+
+      .flight-card:hover::before {
+        width: 6px;
+      }
+
+      .flight-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .flight-details h4 {
+        font-size: 1.35rem;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .flight-details p {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin: 0;
+      }
+
+      .flight-status {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+      }
+
+      .status-confirmed {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--secondary);
+      }
+
+      .status-pending {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: var(--accent);
+      }
+
+      .status-cancelled {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: var(--error);
+      }
+
+      .payment-info {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+      }
+
+      .rebook-btn {
+        background: var(--primary);
+        color: var(--light);
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        border: none;
+        white-space: nowrap;
+      }
+
+      .rebook-btn:hover {
+        background: #0052d6;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+      }
+
+      .no-flights {
+        text-align: center;
+        font-size: 1.3rem;
+        color: var(--text-secondary);
+        margin-top: 2rem;
+        padding: 2rem;
+        background: var(--light);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+
+      /* Loading Spinner */
+      .spinner {
+        border: 4px solid var(--gray);
+        border-top: 4px solid var(--primary);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 3rem auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Footer */
+      footer {
+        background: var(--dark);
+        color: var(--light);
+        padding: 4rem 0 2rem;
+        margin-top: 4rem;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-section h4 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+      }
+
+      .footer-section h4::after {
+        content: "";
+        position: absolute;
+        width: 50%;
+        height: 2px;
+        bottom: -8px;
+        left: 0;
+        background: var(--primary);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.9rem;
+        transition: transform 0.3s ease;
+      }
+
+      .footer-links li:hover {
+        transform: translateX(5px);
+      }
+
+      .footer-links a,
+      .footer-links li {
+        color: var(--light);
+        opacity: 0.9;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .footer-links a:hover,
+      .footer-links li:hover {
+        opacity: 1;
+        color: var(--primary);
+      }
+
+      .footer-links i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1.2rem;
+        margin-top: 1.5rem;
+      }
+
+      .social-links a {
+        color: var(--light);
+        font-size: 1.5rem;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .social-links a:hover {
+        opacity: 1;
+        transform: translateY(-3px);
+        background: var(--primary);
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        opacity: 0.8;
+        font-size: 0.9rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-container {
+          padding: 1rem 1.5rem;
+        }
+
+        nav ul {
+          gap: 1.5rem;
+        }
+
+        nav a {
+          font-size: 1rem;
+        }
+
+        .profile-section {
+          padding: 7rem 1rem 2rem;
+        }
+
+        .profile-card {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          padding: 2rem;
+        }
+
+        .profile-details {
+          align-items: center;
+        }
+
+        .profile-details span {
+          text-align: center;
+        }
+
+        .edit-profile-btn {
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .flight-card {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1.5rem;
+        }
+
+        .rebook-btn {
+          align-self: flex-end;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .nav-container {
+          flex-direction: column;
+          gap: 1rem;
+          padding: 1rem;
+        }
+
+        .auth-buttons {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .btn {
+          width: 100%;
+          padding: 0.8rem;
+        }
+
+        .profile-header h2 {
+          font-size: 2.2rem;
+        }
+
+        .profile-picture {
+          width: 120px;
+          height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="nav-container">
+        <div class="logo" onclick="window.location.href='home.html'">
+          <img src="logo.png" alt="AirTaxi Logo" />
+        </div>
+        <nav>
+          <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="home.html#services">Services</a></li>
+            <li><a href="home.html#about">About</a></li>
+            <li><a href="home.html#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons">
+          <button
+            class="btn btn-secondary"
+            onclick="window.location.href='profile.html'"
+          >
+            My Profile
+          </button>
+          <button class="btn btn-primary" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+      <div class="profile-header">
+        <h2>My Profile</h2>
+        <p>Manage your account information and view your booking history</p>
+      </div>
+
+      <!-- User Information -->
+      <div class="profile-card">
+        <div class="profile-picture">
+          <img
+            src="default-avatar.png"
+            alt="Profile Picture"
+            id="profileImage"
+          />
+          <input
+            type="file"
+            id="profileImageInput"
+            accept="image/*"
+            style="display: none"
+          />
+          <div
+            class="upload-btn"
+            onclick="document.getElementById('profileImageInput').click();"
+          >
+            <i class="fas fa-camera"></i>
+          </div>
+        </div>
+        <div class="profile-details">
+          <div>
+            <label>Full Name:</label>
+            <span id="userName">Abiram H</span>
+          </div>
+          <div>
+            <label>Username:</label>
+            <span id="userUsername">abiram</span>
+          </div>
+          <div>
+            <label>Email Address:</label>
+            <span id="userEmail">abiram.h2023@vitstudent.ac.in</span>
+          </div>
+          <div>
+            <label>Phone Number:</label>
+            <span id="userPhone">+91 7401323497</span>
+          </div>
+          <div>
+            <label>Emergency Contact:</label>
+            <span id="userEmergencyContact">+91 7401323497</span>
+          </div>
+          <button class="edit-profile-btn" onclick="openEditProfile()">
+            <i class="fas fa-edit"></i> Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <!-- Booking History Section -->
+      <div class="flights-section">
+        <h3>Booking History</h3>
+        <div id="flightCards">
+          <!-- Flight cards will be generated here by JavaScript -->
+          <!-- Loading Spinner -->
+          <div id="flightsLoader" class="spinner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-section">
+            <h4>AirTaxi</h4>
+            <p>
+              Redefining urban mobility with our premium air taxi services
+              across major countriesf.
+            </p>
+            <div class="social-links">
+              <a href="https://www.facebook.com"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="https://twitter.com"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://www.linkedin.com"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul class="footer-links">
+              <li>
+                <a href="home.html"><i class="fas fa-home"></i> Home</a>
+              </li>
+              <li>
+                <a href="home.html#services"
+                  ><i class="fas fa-concierge-bell"></i> Services</a
+                >
+              </li>
+              <li>
+                <a href="home.html#about"
+                  ><i class="fas fa-info-circle"></i> About Us</a
+                >
+              </li>
+              <li>
+                <a href="home.html#contact"
+                  ><i class="fas fa-envelope"></i> Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contact Info</h4>
+            <ul class="footer-links">
+              <li><i class="fas fa-phone-alt"></i> +91 7401323497</li>
+              <li>
+                <i class="fas fa-envelope"></i> abiram.h2023@vitstudent.ac.in
+              </li>
+              <li><i class="fas fa-map-marker-alt"></i> VIT CHENNAI, India</li>
+              <li><i class="fas fa-clock"></i> 24/7 Customer Support</li>
+            </ul>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>
+            &copy; 2023 AirTaxi. All rights reserved. |
+            <a href="#" style="color: var(--primary)">Privacy Policy</a> |
+            <a href="#" style="color: var(--primary)">Terms of Service</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Header scroll effect
+      window.addEventListener("scroll", () => {
+        const header = document.querySelector("header");
+        if (window.scrollY > 50) {
+          header.style.background = "rgba(255, 255, 255, 0.98)";
+          header.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
+        } else {
+          header.style.background = "rgba(255, 255, 255, 0.95)";
+          header.style.boxShadow = "none";
+        }
+      });
+
+      // Logo click animation
+      const logo = document.querySelector(".logo");
+      logo.addEventListener("click", () => {
+        logo.style.transform = "scale(0.95)";
+        setTimeout(() => {
+          logo.style.transform = "scale(1)";
+        }, 200);
+      });
+
+      // Logout function
+      function logout() {
+        localStorage.removeItem("userToken");
+        window.location.href = "login.html";
+      }
+
+      // Fetch and display user details
+      const token = localStorage.getItem("userToken");
+      if (!token) {
+        window.location.href = "login.html";
+      }
+
+      async function getUserDetails() {
+        try {
+          const response = await fetch("http://localhost:3000/user/details", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const user = await response.json();
+            document.getElementById("userName").textContent =
+              user.name || "Not provided";
+            document.getElementById("userUsername").textContent =
+              user.username || "Not provided";
+            document.getElementById("userEmail").textContent =
+              user.email || "Not provided";
+
+            // Format phone numbers if available
+            const formatPhone = (phone) => {
+              if (!phone) return "Not provided";
+              // Simple formatting for demonstration
+              return phone.length === 10
+                ? `+1 (${phone.substring(0, 3)}) ${phone.substring(
+                    3,
+                    6
+                  )}-${phone.substring(6)}`
+                : phone;
+            };
+
+            document.getElementById("userPhone").textContent = formatPhone(
+              user.phone
+            );
+
+            if (user.emergencyContact) {
+              const emergencyParts = user.emergencyContact.split("|");
+              const formattedEmergency =
+                emergencyParts.length > 1
+                  ? `${formatPhone(emergencyParts[0])} (${emergencyParts[1]})`
+                  : formatPhone(emergencyParts[0]);
+              document.getElementById("userEmergencyContact").textContent =
+                formattedEmergency;
+            } else {
+              document.getElementById("userEmergencyContact").textContent =
+                "Not provided";
+            }
+
+            // Load profile image if available
+            if (user.profileImageUrl) {
+              document.getElementById("profileImage").src =
+                user.profileImageUrl;
+            }
+          } else {
+            console.error("Failed to fetch user details");
+          }
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        }
+      }
+
+      getUserDetails();
+
+      // Fetch and display user's flight history
+      const flightCards = document.getElementById("flightCards");
+      const flightsLoader = document.getElementById("flightsLoader");
+
+      getUserFlights();
+
+      async function getUserFlights() {
+        flightsLoader.style.display = "block"; // Show loading spinner
+        try {
+          const response = await fetch("http://localhost:3000/api/trips", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const flights = await response.json();
+
+            flightsLoader.style.display = "none"; // Hide loading spinner
+
+            if (flights.length > 0) {
+              flights.forEach((flight) => {
+                const card = document.createElement("div");
+                card.className = "flight-card";
+
+                // Format date and time
+                const formattedDate = new Date(flight.date).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    weekday: "short",
+                  }
+                );
+
+                const formattedTime = flight.time.includes(":")
+                  ? flight.time
+                  : `${flight.time.substring(0, 2)}:${flight.time.substring(
+                      2
+                    )}`;
+
+                // Determine status class
+                let statusClass = "status-pending";
+                if (flight.status.toLowerCase() === "confirmed") {
+                  statusClass = "status-confirmed";
+                } else if (flight.status.toLowerCase() === "cancelled") {
+                  statusClass = "status-cancelled";
+                }
+
+                card.innerHTML = `
+                                <div class="flight-details">
+                                    <h4>${
+                                      flight.pickup
+                                    } <i class="fas fa-arrow-right"></i> ${
+                  flight.drop
+                }</h4>
+                                    <p><i class="far fa-calendar-alt"></i> ${formattedDate}</p>
+                                    <p><i class="far fa-clock"></i> ${formattedTime}</p>
+                                    <p><i class="fas fa-taxi"></i> ${
+                                      flight.taxiNo || "Not assigned"
+                                    }</p>
+                                    <span class="flight-status ${statusClass}">
+                                        <i class="fas fa-${
+                                          statusClass === "status-confirmed"
+                                            ? "check-circle"
+                                            : statusClass === "status-cancelled"
+                                            ? "times-circle"
+                                            : "hourglass-half"
+                                        }"></i> 
+                                        ${flight.status}
+                                    </span>
+                                    <p class="payment-info">
+                                        <i class="fas fa-rupee-sign"></i> ${
+                                          flight.price || "0.00"
+                                        } paid via ${
+                  flight.paymentMethod || "N/A"
+                }
+                                    </p>
+                                </div>
+                                <button class="rebook-btn">
+                                    <i class="fas fa-redo"></i> Rebook
+                                </button>
+                            `;
+
+                const rebookButton = card.querySelector(".rebook-btn");
+                rebookButton.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  rebookFlight(flight);
+                });
+
+                flightCards.appendChild(card);
+              });
+            } else {
+              const noFlightsMessage = document.createElement("div");
+              noFlightsMessage.className = "no-flights";
+              noFlightsMessage.innerHTML = `
+                            <i class="far fa-paper-plane" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.7;"></i>
+                            <p>You haven't booked any flights yet.</p>
+                            <a href="bookings.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">
+                                Book your first flight now
+                            </a>
+                        `;
+              flightCards.appendChild(noFlightsMessage);
+            }
+          } else {
+            flightsLoader.style.display = "none"; // Hide loading spinner
+            console.error("Failed to fetch flights");
+            const errorMessage = document.createElement("div");
+            errorMessage.className = "no-flights";
+            errorMessage.innerHTML = `
+                        <i class="fas fa-exclamation-triangle" style="color: var(--error); font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Unable to load your booking history at this time.</p>
+                        <button onclick="getUserFlights()" style="
+                            background: var(--primary);
+                            color: white;
+                            border: none;
+                            padding: 0.5rem 1rem;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            margin-top: 1rem;
+                        ">
+                            Try Again
+                        </button>
+                    `;
+            flightCards.appendChild(errorMessage);
+          }
+        } catch (error) {
+          flightsLoader.style.display = "none"; // Hide loading spinner
+          console.error("Error fetching flights:", error);
+          const errorMessage = document.createElement("div");
+          errorMessage.className = "no-flights";
+          errorMessage.innerHTML = `
+                    <i class="fas fa-exclamation-circle" style="color: var(--error); font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p>An error occurred while loading your bookings.</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Please check your internet connection and try again.</p>
+                `;
+          flightCards.appendChild(errorMessage);
+        }
+      }
+
+      // Rebook Flight Function
+      function rebookFlight(flight) {
+        // Construct the URL with query parameters
+        const bookingURL = `bookings.html?pickup=${encodeURIComponent(
+          flight.pickup
+        )}&drop=${encodeURIComponent(flight.drop)}&date=${encodeURIComponent(
+          flight.date
+        )}&time=${encodeURIComponent(flight.time)}&price=${
+          flight.price || 0
+        }&passengers=${flight.passengers || 1}`;
+        window.location.href = bookingURL;
+      }
+
+      // Edit Profile Function
+      function openEditProfile() {
+        // Create a modal for editing profile
+        const modal = document.createElement("div");
+        modal.style.position = "fixed";
+        modal.style.top = "0";
+        modal.style.left = "0";
+        modal.style.width = "100%";
+        modal.style.height = "100%";
+        modal.style.backgroundColor = "rgba(0,0,0,0.7)";
+        modal.style.display = "flex";
+        modal.style.justifyContent = "center";
+        modal.style.alignItems = "center";
+        modal.style.zIndex = "2000";
+
+        modal.innerHTML = `
+                <div style="
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    width: 90%;
+                    max-width: 500px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    animation: fadeInUp 0.3s ease-out;
+                ">
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 1.5rem;
+                    ">
+                        <h3 style="
+                            font-size: 1.5rem;
+                            color: var(--primary);
+                            margin: 0;
+                        ">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </h3>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="
+                            background: none;
+                            border: none;
+                            font-size: 1.5rem;
+                            cursor: pointer;
+                            color: var(--text-secondary);
+                        ">
+                            &times;
+                        </button>
+                    </div>
+                    <form id="editProfileForm" style="display: grid; gap: 1.2rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Full Name</label>
+                            <input type="text" id="editName" value="${
+                              document.getElementById("userName").textContent
+                            }" 
+                                style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Phone Number</label>
+                            <input type="tel" id="editPhone" value="${
+                              document.getElementById("userPhone").textContent
+                            }" 
+                                style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Emergency Contact</label>
+                            <input type="tel" id="editEmergencyContact" value="${
+                              document.getElementById("userEmergencyContact")
+                                .textContent
+                            }" 
+                                placeholder="Phone and name (e.g., +1234567890|Name)"
+                                style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px;">
+                        </div>
+                        <button type="submit" style="
+                            background: var(--primary);
+                            color: white;
+                            border: none;
+                            padding: 0.8rem;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            margin-top: 1rem;
+                            transition: all 0.3s;
+                        ">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+            `;
+
+        document.body.appendChild(modal);
+
+        // Handle form submission
+        const form = modal.querySelector("#editProfileForm");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const name = modal.querySelector("#editName").value;
+          const phone = modal.querySelector("#editPhone").value;
+          const emergencyContact = modal.querySelector(
+            "#editEmergencyContact"
+          ).value;
+
+          try {
+            const response = await fetch("http://localhost:3000/user/update", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                name,
+                phone,
+                emergencyContact,
+              }),
+            });
+
+            if (response.ok) {
+              // Update the displayed information
+              document.getElementById("userName").textContent = name;
+              document.getElementById("userPhone").textContent = phone;
+              document.getElementById("userEmergencyContact").textContent =
+                emergencyContact;
+
+              // Close the modal
+              modal.remove();
+
+              // Show success message
+              alert("Profile updated successfully!");
+            } else {
+              alert("Failed to update profile. Please try again.");
+            }
+          } catch (error) {
+            console.error("Error updating profile:", error);
+            alert("An error occurred while updating your profile.");
+          }
+        });
+      }
+
+      // Handle Profile Picture Upload
+      const profileImageInput = document.getElementById("profileImageInput");
+      profileImageInput.addEventListener("change", handleProfileImageUpload);
+
+      function handleProfileImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+          // Check if the file is an image
+          if (!file.type.match("image.*")) {
+            alert("Please select an image file (JPEG, PNG, etc.)");
+            return;
+          }
+
+          // Check file size (max 2MB)
+          if (file.size > 2 * 1024 * 1024) {
+            alert("Image size should be less than 2MB");
+            return;
+          }
+
+          // Display the selected image
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("profileImage").src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+
+          // Upload the image to the server
+          uploadProfileImage(file);
+        }
+      }
+
+      async function uploadProfileImage(file) {
+        // Create FormData object
+        const formData = new FormData();
+        formData.append("profileImage", file);
+
+        // Show loading state
+        const uploadBtn = document.querySelector(".upload-btn");
+        const originalIcon = uploadBtn.innerHTML;
+        uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        try {
+          const response = await fetch(
+            "http://localhost:3000/user/uploadProfileImage",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: formData,
+            }
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Profile image uploaded successfully:", data);
+            // Update profile image URL in user details if needed
+            if (data.profileImageUrl) {
+              document.getElementById("profileImage").src =
+                data.profileImageUrl;
+            }
+          } else {
+            console.error("Failed to upload profile image");
+            alert("Failed to upload profile image. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error uploading profile image:", error);
+          alert("An error occurred while uploading your profile image.");
+        } finally {
+          // Restore original button state
+          uploadBtn.innerHTML = originalIcon;
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AirTaxi - Premium Air Transport Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Fonts and Font Awesome -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Stylesheet -->
+    <style>
+      :root {
+        --primary: #0062ff;
+        --primary-dark: #0052d6;
+        --primary-light: #e6f0ff;
+        --secondary: #4caf50;
+        --accent: #f59e0b;
+        --dark: #1a1a1a;
+        --light: #ffffff;
+        --gray: #f5f7fa;
+        --background: #f5f7fa;
+        --card-bg: #ffffff;
+        --text-primary: #1a1a1a;
+        --text-secondary: #666666;
+        --border-color: #e0e0e0;
+        --error: #e74c3c;
+        --success: #28a745;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background: var(--background);
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      /* Header Styles */
+      header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+      }
+
+      .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logo img {
+        height: 60px;
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover img {
+        transform: scale(1.1);
+      }
+
+      nav ul {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      nav a {
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+
+      nav a:hover,
+      nav a.active {
+        color: var(--primary);
+        background: var(--gray);
+      }
+
+      .auth-buttons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: var(--light);
+      }
+
+      .btn-secondary {
+        background: var(--gray);
+        color: var(--text-primary);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      /* Hero Section */
+      .hero {
+        height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("https://i.ibb.co/3YhK4gr/DALL-E-2024-10-27-23-32-20-A-futuristic-and-glamorous-air-taxi-flying-over-a-vibrant-modern-cityscap.webp");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--light);
+        padding: 0 1rem;
+      }
+
+      .hero-content {
+        max-width: 800px;
+        animation: fadeIn 1s ease-out;
+      }
+
+      .hero h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      /* Info Sections */
+      .info-section {
+        display: none;
+        padding: 6rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .info-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      .info-content {
+        background: var(--light);
+        padding: 3rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .info-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: var(--primary);
+      }
+
+      .info-section p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+      }
+
+      /* Contact Section Specific Styles */
+      #contact .info-content {
+        padding: 3rem;
+      }
+
+      .contact-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+
+      .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .contact-info-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--primary-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.2rem;
+      }
+
+      .contact-info-text h4 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+      }
+
+      .contact-info-text p,
+      .contact-info-text a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .contact-info-text a:hover {
+        color: var(--primary);
+      }
+
+      .contact-form {
+        background: var(--gray);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+      }
+
+      .contact-form h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(0, 98, 255, 0.1);
+      }
+
+      .form-group textarea {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .office-hours {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .office-hours h4 {
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+
+      .hours-list {
+        list-style: none;
+      }
+
+      .hours-list li {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px dashed var(--border-color);
+      }
+
+      .hours-list li:last-child {
+        border-bottom: none;
+      }
+
+      .hours-list .day {
+        font-weight: 500;
+      }
+
+      .hours-list .time {
+        color: var(--text-secondary);
+      }
+
+      .map-container {
+        margin-top: 3rem;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        height: 300px;
+      }
+
+      .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* Features Section */
+      .features {
+        padding: 8rem 0;
+        background: var(--gray);
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .feature-card {
+        background: var(--light);
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .feature-card.animated {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--primary);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .feature-icon i {
+        color: var(--light);
+        font-size: 1.5rem;
+      }
+
+      .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        font-size: 1rem;
+      }
+
+      /* Stats Counter */
+      .stats-container {
+        text-align: center;
+        margin-top: 2rem;
+        padding: 1rem;
+      }
+
+      .stats-counter {
+        display: inline-block;
+        font-weight: bold;
+        color: var(--primary);
+        font-size: 2rem;
+        margin-right: 0.5rem;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--dark);
+        color: var(--light);
+        padding: 4rem 0;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+      }
+
+      .footer-section h4 {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-links a {
+        color: var(--light);
+        opacity: 0.8;
+        text-decoration: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        opacity: 1;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .social-links a {
+        color: var(--light);
+        font-size: 1.5rem;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+      }
+
+      .social-links a:hover {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: var(--primary);
+        z-index: 1001;
+        transition: width 0.1s ease;
+      }
+
+      .cursor-glow {
+        width: 20px;
+        height: 20px;
+        background: rgba(0, 98, 255, 0.3);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s ease;
+        z-index: 9999;
+        mix-blend-mode: screen;
+      }
+
+      .floating-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--success);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        transform: translateX(200%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+      }
+
+      .floating-alert.show {
+        transform: translateX(0);
+      }
+
+      .hero-badge {
+        position: absolute;
+        top: -60px;
+        right: -40px;
+        background: var(--accent);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        transform: rotate(15deg);
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .feature-card {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          45deg,
+          rgba(0, 98, 255, 0.1) 0%,
+          rgba(0, 98, 255, 0) 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+
+      /* Weather Widget */
+      .weather-widget {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        z-index: 999;
+        backdrop-filter: blur(10px);
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+      }
+
+      .weather-widget.show {
+        transform: translateX(0);
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: rotate(15deg) translateY(0px);
+        }
+        50% {
+          transform: rotate(15deg) translateY(-10px);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .hero h1 {
+          font-size: 3rem;
+        }
+
+        .contact-container {
+          grid-template-columns: 1fr;
+        }
+
+        .feature-card {
+          padding: 2rem;
+        }
+
+        .info-section {
+          padding: 4rem 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-container {
+          padding: 1rem;
+        }
+
+        nav ul {
+          display: none;
+        }
+
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
+        }
+
+        .features {
+          padding: 4rem 0;
+        }
+
+        .feature-card {
+          padding: 1.5rem;
+        }
+
+        .info-section {
+          padding: 3rem 1.5rem;
+        }
+
+        .info-content {
+          padding: 2rem;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
+
+        .contact-form {
+          padding: 1.5rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .logo img {
+          height: 45px;
+        }
+
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .hero p {
+          font-size: 1rem;
+        }
+
+        .auth-buttons {
+          gap: 0.5rem;
+        }
+
+        .btn {
+          padding: 0.6rem 1rem;
+          font-size: 0.85rem;
+        }
+
+        .feature-card {
+          padding: 1.25rem;
+        }
+
+        .info-section {
+          padding: 2rem 1rem;
+        }
+
+        .info-content {
+          padding: 1.5rem;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .contact-info-icon {
+          width: 40px;
+          height: 40px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scroll-progress"></div>
+    <div class="cursor-glow"></div>
+    <div class="floating-alert" id="welcomeAlert">
+      👋 Welcome to AirTaxi! Experience the future of travel.
+    </div>
+    <div class="weather-widget" id="weatherWidget">
+      <h4>Current Weather</h4>
+      <div id="weatherInfo">Loading...</div>
+    </div>
+
+    <!-- Header Section -->
+    <header>
+      <div class="nav-container">
+        <div class="logo">
+          <img src="logo.png" alt="AirTaxi Logo" />
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="bookings.html">Book Now</a></li>
+            <li><a href="#services" id="servicesLink">Services</a></li>
+            <li><a href="#about" id="aboutLink">About</a></li>
+            <li><a href="#contact" id="contactLink">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="auth-buttons" id="authButtons">
+          <button
+            class="btn btn-secondary"
+            onclick="window.location.href='login.html'"
+          >
+            Login
+          </button>
+          <button
+            class="btn btn-primary"
+            onclick="window.location.href='bookings.html'"
+          >
+            Book Now
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <div class="hero-badge">New Routes Added!</div>
+        <h1>Experience Luxury Air Travel</h1>
+        <p>
+          Skip the traffic and travel in style with our premium air taxi
+          service. Book your flight today and redefine your journey.
+        </p>
+        <button
+          class="btn btn-primary"
+          onclick="window.location.href='bookings.html'"
+        >
+          Start Your Journey
+        </button>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="info-section" id="about">
+      <div class="container">
+        <div class="info-content">
+          <h2>About AirTaxi</h2>
+          <p>
+            Welcome to AirTaxi, the future of urban air mobility. Founded in
+            2020, we're revolutionizing transportation with our fleet of
+            state-of-the-art electric vertical takeoff and landing (eVTOL)
+            aircraft.
+          </p>
+          <p>
+            Our mission is to provide fast, safe, and sustainable air
+            transportation that reduces urban congestion and travel time. With
+            zero emissions and whisper-quiet operation, we're setting new
+            standards for eco-friendly travel.
+          </p>
+          <p>
+            All our pilots undergo rigorous training and our aircraft are
+            maintained to the highest safety standards. We're proud to have
+            completed over 10,000 flights with a 100% safety record.
+          </p>
+          <p>
+            Join us in shaping the future of transportation and experience the
+            freedom of urban air mobility.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="info-section" id="contact">
+      <div class="container">
+        <div class="info-content">
+          <h2>Get In Touch</h2>
+          <p class="contact-intro">
+            We're here to help you with any questions or concerns. Our team is
+            available 24/7 to ensure your air travel experience is seamless and
+            enjoyable.
+          </p>
+
+          <div class="contact-container">
+            <div class="contact-info">
+              <div class="contact-info-item">
+                <div class="contact-info-icon">
+                  <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="contact-info-text">
+                  <h4>Customer Support</h4>
+                  <p><a href="tel:+917401323497">+91 7401323497</a></p>
+                  <p>Available 24/7 for your convenience</p>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="contact-info-text">
+                  <h4>Email Us</h4>
+                  <p>
+                    <a href="mailto:abiram.h2023@vitstudent.ac.in"
+                      >abiram.h2023@vitstudent.ac.in</a
+                    >
+                  </p>
+                  <p>Response time: within 2 business hours</p>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="contact-info-text">
+                  <h4>Corporate Headquarters</h4>
+                  <p>VIT CHENNAI, Tamil Nadu, India</p>
+                  <p>Near Kelambakkam-Vandalur Road</p>
+                </div>
+              </div>
+
+              <div class="office-hours">
+                <h4>Business Hours</h4>
+                <ul class="hours-list">
+                  <li>
+                    <span class="day">Monday - Friday</span>
+                    <span class="time">9:00 AM - 6:00 PM</span>
+                  </li>
+                  <li>
+                    <span class="day">Saturday</span>
+                    <span class="time">10:00 AM - 4:00 PM</span>
+                  </li>
+                  <li>
+                    <span class="day">Sunday</span>
+                    <span class="time">Closed</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="contact-form">
+              <h3>Send Us a Message</h3>
+              <form id="contactForm">
+                <div class="form-group">
+                  <label for="name">Your Name</label>
+                  <input type="text" id="name" name="name" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" id="email" name="email" required />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" />
+                </div>
+                <div class="form-group">
+                  <label for="subject">Subject</label>
+                  <select id="subject" name="subject">
+                    <option value="general">General Inquiry</option>
+                    <option value="booking">Booking Assistance</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="complaint">Complaint</option>
+                    <option value="business">Business Inquiry</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="message">Your Message</label>
+                  <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.040384294156!2d80.1487223153313!3d12.840290221214382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5259af8e491f67%3A0x944b42131b757d2d!2sVellore%20Institute%20of%20Technology%20-%20VIT%20Chennai!5e0!3m2!1sen!2sin!4v1624456789012!5m2!1sen!2sin"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="services">
+      <div class="container">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3>Quick Booking</h3>
+            <p>
+              Book your air taxi in minutes with our streamlined booking
+              process. No hassle, no waiting.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Safety First</h3>
+            <p>
+              Your safety is our priority. All our aircraft are maintained to
+              the highest standards with experienced pilots.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <h3>Time Efficient</h3>
+            <p>
+              Save precious time by avoiding ground traffic. Reach your
+              destination up to 5x faster.
+            </p>
+          </div>
+        </div>
+        <div class="stats-container">
+          <span class="stats-counter" id="flightsCounter">0</span>+ Flights
+          Completed
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <!-- About Section -->
+          <div class="footer-section">
+            <h4>About AirTaxi</h4>
+            <p>
+              Experience the future of urban mobility with our premium air taxi
+              service.
+            </p>
+            <div class="social-links">
+              <a href="https://www.facebook.com" target="_blank"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="https://twitter.com" target="_blank"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="https://www.instagram.com" target="_blank"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://www.linkedin.com" target="_blank"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+            </div>
+          </div>
+
+          <!-- Quick Links Section -->
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="bookings.html">Book Now</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact Section -->
+          <div class="footer-section">
+            <h4>Contact Us</h4>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-phone"></i>
+                <a href="tel:+917401323497">+91 7401323497</a>
+              </li>
+              <li>
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:abiram.h2023@vitstudent.ac.in"
+                  >abiram.h2023@vitstudent.ac.in</a
+                >
+              </li>
+              <li><i class="fas fa-map-marker-alt"></i> VIT CHENNAI, India</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Check authentication status and update buttons
+      function checkAuthStatus() {
+        const token = localStorage.getItem("userToken");
+        const authButtons = document.getElementById("authButtons");
+
+        if (token) {
+          authButtons.innerHTML = `
+            <button class="btn btn-secondary" onclick="window.location.href='profile.html'">
+              My Profile
+            </button>
+            <button class="btn btn-primary" onclick="logout()">
+              Sign Out
+            </button>
+          `;
+        }
+      }
+
+      // Logout function
+      function logout() {
+        localStorage.removeItem("userToken");
+        window.location.href = "login.html";
+      }
+
+      // Initialize auth status
+      checkAuthStatus();
+
+      // Navigation functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const aboutLink = document.getElementById("aboutLink");
+        const contactLink = document.getElementById("contactLink");
+        const servicesLink = document.getElementById("servicesLink");
+        const navLinks = document.querySelectorAll("nav a");
+        const sections = document.querySelectorAll("section");
+
+        // Hide all info sections initially
+        document.querySelectorAll(".info-section").forEach((section) => {
+          section.style.display = "none";
+        });
+
+        // About link click handler
+        aboutLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          // Hide all sections
+          sections.forEach((section) => {
+            section.style.display = "none";
+          });
+          // Show about section
+          document.getElementById("about").style.display = "block";
+          // Update active nav link
+          navLinks.forEach((link) => link.classList.remove("active"));
+          this.classList.add("active");
+          // Scroll to section
+          document
+            .getElementById("about")
+            .scrollIntoView({ behavior: "smooth" });
+        });
+
+        // Contact link click handler
+        contactLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          // Hide all sections
+          sections.forEach((section) => {
+            section.style.display = "none";
+          });
+          // Show contact section
+          document.getElementById("contact").style.display = "block";
+          // Update active nav link
+          navLinks.forEach((link) => link.classList.remove("active"));
+          this.classList.add("active");
+          // Scroll to section
+          document
+            .getElementById("contact")
+            .scrollIntoView({ behavior: "smooth" });
+        });
+
+        // Services link click handler
+        servicesLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          // Hide all info sections
+          document.querySelectorAll(".info-section").forEach((section) => {
+            section.style.display = "none";
+          });
+          // Show main sections
+          document.getElementById("home").style.display = "flex";
+          document.getElementById("services").style.display = "block";
+          // Update active nav link
+          navLinks.forEach((link) => link.classList.remove("active"));
+          this.classList.add("active");
+          // Scroll to services section
+          document
+            .getElementById("services")
+            .scrollIntoView({ behavior: "smooth" });
+        });
+
+        // Home link functionality (in case user clicks back to home)
+        document
+          .querySelector('a[href="#home"]')
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            // Show all main sections
+            document.getElementById("home").style.display = "flex";
+            document.getElementById("services").style.display = "block";
+            // Hide info sections
+            document.getElementById("about").style.display = "none";
+            document.getElementById("contact").style.display = "none";
+            // Update active nav link
+            navLinks.forEach((link) => link.classList.remove("active"));
+            this.classList.add("active");
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+
+        // Contact form submission
+        document
+          .getElementById("contactForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            // Here you would typically send the form data to a server
+            alert("Thank you for your message! We'll get back to you soon.");
+            this.reset();
+          });
+      });
+
+      // Header scroll effect
+      window.addEventListener("scroll", () => {
+        const header = document.querySelector("header");
+        if (window.scrollY > 50) {
+          header.style.background = "rgba(255, 255, 255, 0.98)";
+          header.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
+        } else {
+          header.style.background = "rgba(255, 255, 255, 0.95)";
+          header.style.boxShadow = "none";
+        }
+      });
+
+      // Scroll Progress Indicator
+      window.addEventListener("scroll", () => {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.querySelector(".scroll-progress").style.width = scrolled + "%";
+      });
+
+      // Cursor Glow Effect
+      document.addEventListener("mousemove", (e) => {
+        const cursor = document.querySelector(".cursor-glow");
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      });
+
+      // Welcome Alert
+      setTimeout(() => {
+        document.getElementById("welcomeAlert").classList.add("show");
+        setTimeout(() => {
+          document.getElementById("welcomeAlert").classList.remove("show");
+        }, 5000);
+      }, 2000);
+
+      // Weather Widget (Mock Data)
+      setTimeout(() => {
+        document.getElementById("weatherWidget").classList.add("show");
+        document.getElementById("weatherInfo").innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-sun" style="color: #f59e0b;"></i>
+                    <span>28°C | Clear Sky</span>
+                </div>
+            `;
+      }, 3000);
+
+      // Feature card animations
+      function animateFeatureCards() {
+        const featureCards = document.querySelectorAll(".feature-card");
+        featureCards.forEach((card, index) => {
+          setTimeout(() => {
+            card.classList.add("animated");
+          }, index * 200);
+        });
+      }
+
+      // Stats Counter Animation
+      function animateCounter(element, target, duration) {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          element.textContent = Math.floor(start);
+          if (start >= target) {
+            element.textContent = target;
+            clearInterval(timer);
+          }
+        }, 16);
+      }
+
+      // Initialize animations when elements come into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target.classList.contains("features-grid")) {
+              animateFeatureCards();
+            }
+            if (entry.target.id === "flightsCounter") {
+              animateCounter(
+                document.getElementById("flightsCounter"),
+                10000,
+                2000
+              );
+            }
+          }
+        });
+      });
+
+      // Observe elements
+      observer.observe(document.querySelector(".features-grid"));
+      observer.observe(document.getElementById("flightsCounter"));
+    </script>
+  </body>
+</html>

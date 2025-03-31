@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complete Payment</title>
+
+    <!-- Google Fonts and Font Awesome -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary: #0062ff;
+        --primary-dark: #0052d6;
+        --primary-light: #e6f0ff;
+        --secondary: #ff6b00;
+        --text: #2d3748;
+        --text-light: #718096;
+        --background: #f8fafc;
+        --white: #ffffff;
+        --dark: #1a1a1a;
+        --light: #ffffff;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --border-radius: 12px;
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text);
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: url("taxi.png") no-repeat center center fixed;
+        background-size: cover;
+      }
+
+      /* Navigation Bar */
+      header {
+        background: var(--white);
+        box-shadow: var(--shadow);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 1rem 0;
+      }
+
+      .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem;
+      }
+
+      .logo img {
+        height: 50px;
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover img {
+        transform: scale(1.05);
+      }
+
+      nav ul {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      nav a {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 1.1em;
+        font-weight: 500;
+        padding: 0.7rem 1rem;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+
+      nav a:hover {
+        color: var(--primary);
+        background: var(--primary-light);
+      }
+
+      /* Sign Out Button */
+      .signout-btn {
+        background: var(--secondary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 1rem;
+      }
+
+      .signout-btn:hover {
+        background: #e65a00;
+        transform: translateY(-2px);
+      }
+
+      /* Main Container */
+      .main-container {
+        max-width: 600px;
+        margin: 7rem auto 3rem;
+        padding: 3rem;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        flex: 1;
+      }
+
+      h2 {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+        color: var(--primary);
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .qr-section {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .qr-section img {
+        max-width: 200px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .qr-section p {
+        margin-top: 1rem;
+        color: var(--text-light);
+      }
+
+      .payment-form {
+        margin-top: 2rem;
+      }
+
+      .input-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .input-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--text-light);
+        font-size: 1rem;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        font-family: "Inter", sans-serif;
+        transition: var(--transition);
+      }
+
+      .input-group input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-light);
+      }
+
+      .error {
+        color: #f44336;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        border: none;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: var(--transition);
+        flex: 1;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .submit-btn {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .submit-btn:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+
+      .cancel-btn {
+        background-color: #f44336;
+        color: white;
+      }
+
+      .cancel-btn:hover {
+        background-color: #d32f2f;
+        transform: translateY(-2px);
+      }
+
+      .message {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        text-align: center;
+        display: none;
+      }
+
+      /* Footer Section */
+      footer {
+        background: var(--dark);
+        color: var(--light);
+        padding: 4rem 0 3rem;
+        margin-top: auto;
+      }
+
+      .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 3rem;
+      }
+
+      .footer-section h4 {
+        font-size: 1.3rem;
+        margin-bottom: 1.75rem;
+        color: var(--light);
+        font-weight: 600;
+      }
+
+      .footer-section p {
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 1.5rem;
+        line-height: 1.7;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 1rem;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.2s;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-links a:hover {
+        color: var(--light);
+        text-decoration: underline;
+        transform: translateX(5px);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+
+      .social-links a {
+        color: var(--light);
+        font-size: 1.4rem;
+        transition: all 0.2s;
+      }
+
+      .social-links a:hover {
+        transform: translateY(-3px);
+        opacity: 0.9;
+      }
+
+      .footer-links i {
+        margin-right: 0.75rem;
+        width: 24px;
+        text-align: center;
+        font-size: 1.1rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1200px) {
+        .main-container {
+          margin: 7rem 2rem 3rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-container {
+          flex-direction: column;
+          gap: 1.25rem;
+          padding: 1rem;
+        }
+
+        nav ul {
+          gap: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .main-container {
+          margin: 8rem 1.5rem 2rem;
+          padding: 2rem;
+        }
+
+        .btn-group {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .main-container {
+          margin: 8rem 1rem 2rem;
+          padding: 1.75rem;
+        }
+
+        h2 {
+          font-size: 1.8rem;
+          margin-bottom: 1.75rem;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="nav-container">
+        <div class="logo">
+          <img src="logo.png" alt="Taxi Service Logo" />
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <a href="home.html"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li>
+              <a href="bookings.html"
+                ><i class="fas fa-taxi"></i> Book a Taxi</a
+              >
+            </li>
+            <li>
+              <a href="trips.html"><i class="fas fa-suitcase"></i> My Trips</a>
+            </li>
+            <li>
+              <a href="payment.html" class="active"
+                ><i class="fas fa-credit-card"></i> Payment</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <button class="signout-btn" onclick="signOut()">
+          <i class="fas fa-sign-out-alt"></i> Sign Out
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+      <h2>Complete Your Payment</h2>
+
+      <div class="qr-section">
+        <img
+          src="https://i.ibb.co/bKrw52k/gpay-qr.png"
+          alt="GPay QR Code"
+          id="qrCode"
+        />
+        <p>Scan the QR code using GPay to complete the payment.</p>
+      </div>
+
+      <div class="payment-form">
+        <div class="input-group">
+          <label for="email"
+            ><i class="fas fa-envelope"></i> Email Address</label
+          >
+          <input
+            type="email"
+            id="email"
+            placeholder="your@email.com"
+            required
+          />
+          <div id="email-error" class="error">
+            Please enter a valid email address
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="card-number"
+            ><i class="far fa-credit-card"></i> Card Number</label
+          >
+          <input
+            type="text"
+            id="card-number"
+            placeholder="1234 5678 9101 1121"
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="expiry"
+            ><i class="far fa-calendar-alt"></i> Expiry Date</label
+          >
+          <input type="text" id="expiry" placeholder="MM/YY" />
+        </div>
+
+        <div class="input-group">
+          <label for="cvc"><i class="fas fa-lock"></i> CVC</label>
+          <input type="text" id="cvc" placeholder="CVC" />
+        </div>
+
+        <div class="btn-group">
+          <button class="btn submit-btn" id="submitBtn">Submit Payment</button>
+          <button class="btn cancel-btn" id="cancelBtn">Cancel</button>
+        </div>
+
+        <div class="message" id="formMessage"></div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-grid">
+          <!-- About Section -->
+          <div class="footer-section">
+            <h4>About Taxi Service</h4>
+            <p>
+              Experience premium taxi service with our reliable and comfortable
+              rides. We provide 24/7 service with professional drivers for all
+              your transportation needs.
+            </p>
+            <div class="social-links">
+              <a href="https://www.facebook.com" target="_blank"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="https://twitter.com" target="_blank"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="https://www.instagram.com" target="_blank"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://www.linkedin.com" target="_blank"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+            </div>
+          </div>
+
+          <!-- Quick Links Section -->
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul class="footer-links">
+              <li>
+                <a href="home.html"
+                  ><i class="fas fa-chevron-right"></i> Home</a
+                >
+              </li>
+              <li>
+                <a href="bookings.html"
+                  ><i class="fas fa-chevron-right"></i> Book Now</a
+                >
+              </li>
+              <li>
+                <a href="trips.html"
+                  ><i class="fas fa-chevron-right"></i> My Trips</a
+                >
+              </li>
+              <li>
+                <a href="payment.html"
+                  ><i class="fas fa-chevron-right"></i> Payment</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact Section -->
+          <div class="footer-section">
+            <h4>Contact Us</h4>
+            <ul class="footer-links">
+              <li>
+                <i class="fas fa-phone"></i>
+                <a href="tel:+917401323497">+91 7401323497</a>
+              </li>
+              <li>
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:abiram.h2023@vitstudent.ac.in"
+                  >abiram.h2023@vitstudent.ac.in</a
+                >
+              </li>
+              <li>
+                <i class="fas fa-map-marker-alt"></i>
+                <span>VIT CHENNAI, India</span>
+              </li>
+              <li>
+                <i class="fas fa-clock"></i>
+                <span>24/7 Customer Support</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Form validation and submission
+      const submitBtn = document.getElementById("submitBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const emailInput = document.getElementById("email");
+      const emailError = document.getElementById("email-error");
+      const formMessage = document.getElementById("formMessage");
+
+      submitBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        // Validate email
+        if (!emailInput.value || !emailInput.checkValidity()) {
+          emailError.style.display = "block";
+          return;
+        } else {
+          emailError.style.display = "none";
+        }
+
+        // Show success message
+        formMessage.textContent =
+          "Payment submitted successfully. Redirecting to home page...";
+        formMessage.style.display = "block";
+
+        // Redirect to home page after 2 seconds
+        setTimeout(function () {
+          window.location.href = "home.html";
+        }, 2000);
+      });
+
+      cancelBtn.addEventListener("click", function () {
+        window.location.href = "bookings.html";
+      });
+
+      // Sign Out function
+      function signOut() {
+        localStorage.removeItem("userToken");
+        window.location.href = "login.html";
+      }
+    </script>
+  </body>
+</html>
